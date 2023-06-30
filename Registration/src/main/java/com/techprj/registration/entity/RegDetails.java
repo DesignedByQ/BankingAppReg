@@ -22,7 +22,7 @@ public class RegDetails {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long custid;
+	private Integer custid;
 	private String account;
 	private String username;
 	private String firstname;
@@ -47,7 +47,7 @@ public class RegDetails {
 		super();
 	}
 
-	public RegDetails(Long custid, String account, String username, String firstname, String middlename,
+	public RegDetails(Integer custid, String account, String username, String firstname, String middlename,
 			String lastname, LocalDate dob, Address address, Long mobile, String email, String password,
 			boolean approved, String verdict, File file) {
 		super();
@@ -67,11 +67,11 @@ public class RegDetails {
 		this.file = file;
 	}
 
-	public Long getCustid() {
+	public Integer getCustid() {
 		return custid;
 	}
 
-	public void setCustid(Long custid) {
+	public void setCustid(Integer custid) {
 		this.custid = custid;
 	}
 

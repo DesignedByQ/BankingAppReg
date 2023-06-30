@@ -2,7 +2,12 @@ package com.techprj.registration.service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.CascadeType;
@@ -12,6 +17,7 @@ import javax.persistence.OneToOne;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -84,41 +90,67 @@ public class FileService {
 		
 	}
 	
-//	public RegDetailsDTO storeFile(RegDetailsDTO regDetailsDTO) {
-//		
-//		//Normalize file name
-//		String fileName = StringUtils.cleanPath(regDetailsDTO.getFileDTO().getOriginalFilename());
-//		
-//		try {
-//			// Check if the file's name contains invalid characters
-//			if(fileName.contains("..")) {
-//				//throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-//			}
-//			
-////			RegDetails cust1 = new RegDetails(regDetailsDTO.getUsername(), regDetailsDTO.getFirstname(),
-////					regDetailsDTO.getMiddlename(), regDetailsDTO.getLastname(), regDetailsDTO.getDob(),
-////					regDetailsDTO.getAddressDTO(), regDetailsDTO.getMobile(), regDetailsDTO.getEmail(), 
-////					regDetailsDTO.getPassword(), regDetailsDTO.getApproved(), regDetailsDTO.getVerdict(), 
-////					regDetailsDTO.getFileDTO());
-//					
-//			RegDetails cust = modelMapper.map(regDetailsDTO, RegDetails.class);
-//			
-//			RegDetails custSaved = regDetailsRepo.save(cust);
-//			
-//			RegDetailsDTO custdto = modelMapper.map(custSaved, RegDetailsDTO.class);
-//			
-//			return custdto;
-//			
-//		} 
-//		
-//		catch (IOException ex) {
-//			//throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-//		}
-//		
-//		return null;
-//		
-//	}
+	public List<RegDetailsDTO> getApplications() {
+		
+		List<RegDetails> rd = regDetailsRepo.findAll();
+		
+		List<RegDetailsDTO> dtolist = new ArrayList();
+		
+		for(RegDetails dets: rd) {
+			
+			if(dets.isApproved() == false) {
+				
+				FileDTO fdto = modelMapper.map(dets.getFile(), FileDTO.class);
+				
+				AddressDTO adto = modelMapper.map(dets.getAddress(), AddressDTO.class);
+				
+				RegDetailsDTO rddto = modelMapper.map(dets, RegDetailsDTO.class);
+				
+				rddto.setFileDTO(fdto);
+				rddto.setAddressDTO(adto);
 	
+				dtolist.add(rddto);
+			}
+		}
+
+		return dtolist;
+	}
+	
+	public String deleteApplication(String email) {
+		
+		Optional<RegDetails> rd = regDetailsRepo.findByEmail(email);
+		
+		regDetailsRepo.deleteByEmail(email);
+		
+		return "Account with customer ID: " + rd.get().getCustid() + " and email: " + email + " is now set up as a customer";
+		
+	}
+	
+	public RegDetailsDTO setAsApproved(String email, Map<Object, Object> fields) {
+		
+	    Optional<RegDetails> rd = regDetailsRepo.findByEmail(email);
+
+	    if (rd.isPresent()) {
+	    	
+	        RegDetailsDTO rddto = modelMapper.map(regDetailsRepo.save(rd.get()), RegDetailsDTO.class);
+
+	        fields.forEach((key, value) -> {
+	        	
+	        	Field field1 = ReflectionUtils.findRequiredField(RegDetails.class, (String) key);
+	        	field1.setAccessible(true);
+	        	ReflectionUtils.setField(field1, rd.get(), value);
+	        	
+	        });
+	        
+	        RegDetails updatedCust = regDetailsRepo.save(rd.get());
+	        
+	        return modelMapper.map(updatedCust, RegDetailsDTO.class);
+	        
+	    }
+
+	    return null;
+	    
+	}
 
 	
 //	public RegDetails getDetails(Long fileId) throws FileNotFoundException {

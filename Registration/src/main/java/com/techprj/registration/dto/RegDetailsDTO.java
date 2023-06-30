@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class RegDetailsDTO {
 	
-	private Long custid;
+	private Integer custid;
 	private String account;
 	private String username;
 	private String firstname;
@@ -28,7 +28,7 @@ public class RegDetailsDTO {
 		super();
 	}
 
-	public RegDetailsDTO(Long custid, String account, String username, String firstname, String middlename,
+	public RegDetailsDTO(Integer custid, String account, String username, String firstname, String middlename,
 			String lastname, LocalDate dob, AddressDTO addressDTO, Long mobile, String email, String password,
 			Boolean approved, String verdict, FileDTO fileDTO) {
 		super();
@@ -48,11 +48,11 @@ public class RegDetailsDTO {
 		this.fileDTO = fileDTO;
 	}
 
-	public Long getCustid() {
+	public Integer getCustid() {
 		return custid;
 	}
 
-	public void setCustid(Long custid) {
+	public void setCustid(Integer custid) {
 		this.custid = custid;
 	}
 
