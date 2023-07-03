@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="address")
@@ -25,6 +27,7 @@ public class Address {
 	private String postCode;
 	private String country;
 	@OneToOne(mappedBy = "address")
+	@JsonIgnore
 	private RegDetails regDetails;
 	
 	public Address() {

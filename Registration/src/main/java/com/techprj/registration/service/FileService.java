@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.techprj.registration.dto.AddressDTO;
@@ -41,6 +42,9 @@ public class FileService {
 	
 	@Autowired
 	ModelMapper modelMapper;
+	
+	@Autowired
+	RestTemplate restTemplate;
 	
 	public RegDetailsDTO saveCust(RegDetailsDTO regDetailsDTO) {
 		
@@ -144,7 +148,12 @@ public class FileService {
 	        
 	        RegDetails updatedCust = regDetailsRepo.save(rd.get());
 	        
-	        return modelMapper.map(updatedCust, RegDetailsDTO.class);
+	        //use this to send a get req to email serice with the email and verdict from udated cust
+	        Boolean confirmation = restTemplate.postForObject("http://localhost:8080/api/email/{email}", updatedCust, Boolean.class, updatedCust.getEmail());
+	        
+	        if(confirmation)
+	        	
+	        	return modelMapper.map(updatedCust, RegDetailsDTO.class);
 	        
 	    }
 

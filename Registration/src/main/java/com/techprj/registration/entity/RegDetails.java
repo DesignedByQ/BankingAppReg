@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techprj.registration.dto.AddressDTO;
 import com.techprj.registration.dto.FileDTO;
 
@@ -31,6 +32,7 @@ public class RegDetails {
 	private LocalDate dob;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
+    @JsonIgnore
 	private Address address;
     @Column(unique = true)
     private Long mobile;
@@ -38,6 +40,7 @@ public class RegDetails {
 	private String email;
 	private String password;
 	private boolean approved;
+	private boolean rejected;
 	private String verdict;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "file_id")
@@ -49,7 +52,7 @@ public class RegDetails {
 
 	public RegDetails(Integer custid, String account, String username, String firstname, String middlename,
 			String lastname, LocalDate dob, Address address, Long mobile, String email, String password,
-			boolean approved, String verdict, File file) {
+			boolean approved, boolean rejected, String verdict, File file) {
 		super();
 		this.custid = custid;
 		this.account = account;
@@ -63,6 +66,7 @@ public class RegDetails {
 		this.email = email;
 		this.password = password;
 		this.approved = approved;
+		this.rejected = rejected;
 		this.verdict = verdict;
 		this.file = file;
 	}
@@ -163,6 +167,14 @@ public class RegDetails {
 		this.approved = approved;
 	}
 
+	public boolean isRejected() {
+		return rejected;
+	}
+
+	public void setRejected(boolean rejected) {
+		this.rejected = rejected;
+	}
+
 	public String getVerdict() {
 		return verdict;
 	}
@@ -184,7 +196,7 @@ public class RegDetails {
 		return "RegDetails [custid=" + custid + ", account=" + account + ", username=" + username + ", firstname="
 				+ firstname + ", middlename=" + middlename + ", lastname=" + lastname + ", dob=" + dob + ", address="
 				+ address + ", mobile=" + mobile + ", email=" + email + ", password=" + password + ", approved="
-				+ approved + ", verdict=" + verdict + ", file=" + file + "]";
+				+ approved + ", rejected=" + rejected + ", verdict=" + verdict + ", file=" + file + "]";
 	}
 	
 }

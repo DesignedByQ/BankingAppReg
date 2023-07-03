@@ -21,6 +21,7 @@ public class RegDetailsDTO {
 	private String email;
 	private String password;
 	private Boolean approved;
+	private Boolean rejected;
 	private String verdict;
 	private FileDTO fileDTO;
 	
@@ -30,7 +31,7 @@ public class RegDetailsDTO {
 
 	public RegDetailsDTO(Integer custid, String account, String username, String firstname, String middlename,
 			String lastname, LocalDate dob, AddressDTO addressDTO, Long mobile, String email, String password,
-			Boolean approved, String verdict, FileDTO fileDTO) {
+			Boolean approved, Boolean rejected, String verdict, FileDTO fileDTO) {
 		super();
 		this.custid = custid;
 		this.account = account;
@@ -44,6 +45,7 @@ public class RegDetailsDTO {
 		this.email = email;
 		this.password = password;
 		this.approved = approved;
+		this.approved = rejected;
 		this.verdict = verdict;
 		this.fileDTO = fileDTO;
 	}
@@ -143,6 +145,14 @@ public class RegDetailsDTO {
 	public void setApproved(Boolean approved) {
 		this.approved = approved;
 	}
+	
+	public Boolean getRejected() {
+		return rejected;
+	}
+
+	public void setRejected(Boolean rejected) {
+		this.rejected = rejected;
+	}
 
 	public String getVerdict() {
 		return verdict;
@@ -165,7 +175,7 @@ public class RegDetailsDTO {
 		return "RegDetailsDTO [custid=" + custid + ", account=" + account + ", username=" + username + ", firstname="
 				+ firstname + ", middlename=" + middlename + ", lastname=" + lastname + ", dob=" + dob + ", addressDTO="
 				+ addressDTO + ", mobile=" + mobile + ", email=" + email + ", password=" + password + ", approved="
-				+ approved + ", verdict=" + verdict + ", fileDTO=" + fileDTO + "]";
+				+ approved + ", rejected=" + rejected + ", verdict=" + verdict + ", fileDTO=" + fileDTO + "]";
 	}
 			
 }
