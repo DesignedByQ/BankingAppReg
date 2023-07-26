@@ -20,7 +20,7 @@ import com.techprj.registration.dto.FileDTO;
 @Entity
 @Table(name="details")
 public class RegDetails {
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer custid;

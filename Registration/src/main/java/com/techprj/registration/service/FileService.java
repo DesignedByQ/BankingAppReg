@@ -138,7 +138,7 @@ public class FileService {
 
 	    if (rd.isPresent()) {
 	    	
-	        RegDetailsDTO rddto = modelMapper.map(regDetailsRepo.save(rd.get()), RegDetailsDTO.class);
+	        //RegDetailsDTO rddto = modelMapper.map(regDetailsRepo.save(rd.get()), RegDetailsDTO.class);
 
 	        fields.forEach((key, value) -> {
 	        	
